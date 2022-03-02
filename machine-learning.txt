@@ -1,0 +1,81 @@
+Get the Data
+Create Isolated Environment
+
+conda create --name learning
+conda info --envs
+conda activate learning
+conda list
+conda activate base
+conda env remove -n learning
+conda install jupyter matplotlib numpy pandas scipy scikit-learn
+
+
+Get the Data
+Download the Data
+
+Write a samll function to:
+	Download a single compressed file, housing.tgz which contains comma-separated value (CSV)
+	Decompress the file and extract the CSV
+It is usefull to have function for these repeatable steps
+	if you need to install the data set on multiple machines
+	If the data changes regularly
+
+
+Get the Data
+Take a quick Look at the Data Strcture
+https://www.youtube.com/watch?v=P4F3PzCMrtk
+1. Take a look at the top 5 rows housing.head()
+2. Get quick description of the data housing.info()
+3. Explore Categorical attributes housing["ocean_proximity"].value_counts()
+4. Explore Numrical attributes housing.describe()
+	std: measures how dispersed the values are
+		it is root of the variance, which is the avarage of the squared deviation from the mean
+		when feature has bell-shaped "68, 95, 99.7" rule applies
+		mean += std, mean += 2std, mean += 3std
+	percentiles: indicates the value below a given percentage of observations
+5. Plot histogram for numrical attributes
+	y: number of instances
+	x: given value range
+	Plot histogram for specific attribute housing['median_house_value'].hist(bins=50, figsize=(20,15))
+	Plot histogram for each numrical attribute housing.hist(bins=50, figsize=(20,15))
+Notes
+1. median income attribute is 
+	scaled 
+		at 10,000 of USD
+	capped 
+		15 for higher median incomes (actually 15.0001)
+		0.49 for lower median incomes (actually 0.49999)
+2. housing_median_age, and median_house_value are also capped
+	Machine Learning algorithm may learn that prices never go beyon that limit
+	If this is problem you have 2 options
+		a. Collect proper lables for districts whose labels were capped
+		b. Remove those districts from the training, and testing sets
+3. attributes have very different scales, we will explore feature scalling later.
+4. Many histograms are tail heavy, we will try transforming these attributes later to have more bell-shaped distributions as this shape make it harder for machine learning algorithm to detect patterns.
+
+Hopefully you now have a better understanding of the kind of data you are dealing with
+but that enough for now, you need to create a test set, put it aside and never look at it.
+
+
+Get the Data
+Create a Test Set
+
+Data Snooping Bias
+- Your brain is an amazing pattern detection system, it is highly prone to overfitting: if you look at the test set
+- You may see interesting pattern in the test data that leads you to select specific model
+- Then Generalization Error of Test set will be too optimistics
+
+Create a Test Set
+	Theoretically quite simple, just pick some instances randomly, typically 20% and set them aside:
+	CODING
+	Work! But it is not perfect
+	Because when run the program again, it will generate a different test set! then you get to see the whole dataset, which is what you want to avoid
+	Solutions
+	1. Save the test set on the first run then load it in subsequent runs
+	2. Set the random number generator's seed np.random.seed(42)
+	Work! But it is not perfect
+	Because both will break next time you fetch an updated dataset.
+	Solutions
+	1. Use Instance's identifier to decide whether or not it should go in the test set
+	2. Compute a hash of each instance and put that instance in test setif the hash is lower or equal to 20% of the maximum hash value
+	CODING
