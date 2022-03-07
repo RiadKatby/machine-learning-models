@@ -79,3 +79,70 @@ Create a Test Set
 	1. Use Instance's identifier to decide whether or not it should go in the test set
 	2. Compute a hash of each instance and put that instance in test setif the hash is lower or equal to 20% of the maximum hash value
 	CODING
+
+Discover and Visualize the Data to Gain Insights
+Visualizing Geographical Data
+- Draw Geographical Information
+	Create Scatterplot of all districts to visualize the data
+	Play with alpha to make it easier to visualize places where is high density
+	Let make radius of circle represents the district's population
+	Color represent the price ranges from blue (low values) to red (high prices)
+	https://www.youtube.com/watch?v=P4F3PzCMrtk
+	Findings
+	1. Housing Price are very much related to the location and population density
+	2. We could use clustering algorithm to detect main clusters and use it as new feature for input, but North prices are not too high
+	3. We could use Ocean proximity attribute as well
+
+Discover and Visualize the Data to Gain Insights
+Looking for Correlations
+	Correlation coefficient ranges from 1 to -1 
+		Pearson's r means if x goes up, then y goes up/down
+		1 strong positive linear correlation
+		-1 strong negative linear correlation
+		0 there is no linear correlation
+
+	Scatter Matrix plot numrical attribute against every other numrical attributes
+		Define most promising attributes that seem most correlated with median housing value
+		Main diagonal will not be useful as it the attribute against itself Pandas draw the histogram of the attribute
+		median_income is the most promising attribute to predict median_house_value
+		Findings
+		1. Correlation is indeed very strong
+		2. Upward trend is clear, and points are not too dispersed
+		3. Price cap at 500,000$ that appear in histogram
+		4. There are another lines on 450,000$, 350,000$, 280,000$
+
+Discover and Visualize the Data to Gain Insights
+Experimenting with Attribute Combinations
+	You need to combin attributes with eachother and restudy the correlation searching for another relations
+	total_rooms/households, total_bedrooms/total_rooms, population/household
+	These proposed comibniation could be helpfull Why?
+	- lower bedroom/room houses tend to be more expensive.
+	- rooms/household is more informative than total_rooms/district
+	- larger houses more expensive
+
+These kind of exploration, combiniation and interpretation need to be iterative process
+
+
+Prepare the Data for Machine Learning Algorithm
+- Separate the predictors and the labels as it is not necessary to apply the same transformation to both
+housing = strat_train_set.drop('median_house_value', axis=1)
+housing_labels = strat_train_set['median_house_value'].copy()
+
+
+Prepare the Data for Machine Learning Algorithm
+Data Cleaning
+- Take care of missing values of total_bedrooms as most ML Algorithm cannot work with missing features we have 3 options
+	1. Remove Corresponding Districts
+	2. Remove whole attributes
+	3. Set the values to some value (zero, mean, median, etc)
+		- You need to calculate mean on the training set and use it fill up missing values
+		- Save mean to use on test set when you evaluate the model, and on live system when new data is came
+		- Scikit-Lean provide handy class to fill up missing value with whatever strategy you choose
+		- Since median computed only on numrical attribute, we need to drop ocean_proximity as it is categorical
+		- SimpleImputer compute median of each attribute and stor the result in statistics_
+		- It is safer to apply imputer to all numerical attributes
+		
+		
+
+		
+	
