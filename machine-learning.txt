@@ -154,5 +154,67 @@ Finding
 - Machine Learning will learn that nearby values are more similar than distant values
 - Which may be good in some cases like (bad, average, good, excellent)
 - But it is not the case with ocean_proximity
-		
-	
+
+One-Hot Encoding
+Create vector with length equal to number of category
+Set 1 (hot) corresponding to category index
+Set 0 (cold) elsewhere
+Scikit-Learn provide OneHotEncoder class to convert categorical values into one-hot vectors
+Using fit_transform from OneHotEncoder return SciPy sparse matrix
+https://developpaper.com/instructions-for-using-python-scipy-sparse-matrix/
+Much efficient for memory usage 
+It store location of non-zero element, Instead of store wastefull zeros
+
+
+Prepare the Data for Machine Learning Algorithm
+Custom Transformers
+
+You need to write your transforms for tasks such as custom cleanup operations or combining specific attributes.
+To make custom transformers work seamlessly with Scikit-Learn functionalities (such as pipelines) you need to implement fit() (returning self), transform(), and fit_transform().
+You can get fit_transform() free by add TransformerMixin as base class
+You can achive automatic hyperparameter tuning by add BaseEstimator as another base class which provide get_params() and set_params()	
+CODING
+We create one hyperparameter, add_bedrooms_per_room set to True by default
+It is good to provide sensible defaults
+Hypterparameter are parameters that are part of Algorithm not part of the Learning 
+We can add hyperparameter that gate any data preparation step that you are not 100% sure about.
+More automation more likely you find great combination and Saving you a lot of time
+
+
+Prepare the Data for Machine Learning Algorithm
+Feature Scaling
+Mostly Machine Learning algorithms don’t perform well with numerical input attributes that have very different scales.
+Feature Scaling need to be done on input to fix such these difrences total_rooms range 6 to 39,320, median_income range 0 to 15
+Generally scaling not required for output or target values
+We have to common ways
+- min-max scaling
+- Standardization
+
+Min-Max Scaling (Normalization)
+Simply values are shifted and rescaled so that they end up ranging from 0 to 1.
+We do that by (x - min(X)) / max(X) - min(X)
+Scikit-Learn provide MinMaxScaler transformer which has feature_range hyperparameter that allow you to change the range of values
+
+Standardization
+We do that by (x - mean(X)) / std(X)
+- Values always have zero mean
+- Values resulting distribution has unit variance (std = 1)
+- Much less affected by outliers
+- Does not bound values to specific range (sometimes this is problem eg neural networks often expect input range 0 to 1)
+- Scikit-Learn provide StandardScaler transformer
+
+
+Prepare the Data for Machine Learning Algorithm
+Transformation Pipelines
+As we have seen there are many data transformation steps that need to be executed in the right order (Imputer, Attributes Adder, Std Scaler)
+Pipline constructor takes list of tuple (name, transformer) defining a sequence of steps
+All steps by the last must be transformers (they must have fit_transform() method)
+When fit() method called all transformers fit_transform() methods are called sequentially passing output of each call as parameter to the next call
+Final estimator just calls the fit() method.
+Pipeline exposes same method as final estimator
+
+Scikit-Learn provide ColumnTransformer to handle numerical columns separately from categorical columns
+- Constructor require list of tuples (name, transformer or drop or passthrough, list of columns (names or indices)) that the transformer should apply to
+- Transformer return same number of rows, but may different number of columns
+- When such mix of sparse and dense matrices are exists ColumnTransform estimates the density of the final matrix (ratio of non zero cells)
+- Return sparse matrix if sparse_threshold=03 is exceeded
