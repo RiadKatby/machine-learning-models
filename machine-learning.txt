@@ -139,10 +139,20 @@ Data Cleaning
 		- Save mean to use on test set when you evaluate the model, and on live system when new data is came
 		- Scikit-Lean provide handy class to fill up missing value with whatever strategy you choose
 		- Since median computed only on numrical attribute, we need to drop ocean_proximity as it is categorical
-		- SimpleImputer compute median of each attribute and stor the result in statistics_
+		- SimpleImputer compute median of each attribute and store the result in statistics_
 		- It is safer to apply imputer to all numerical attributes
+		- call fit method to calculate mean value for all numrical attributes
+		- call transform method to apply mean to missing values 
 		
 		
-
+Prepare the Data for Machine Learning Algorithm
+Handling Text and Categorical Attributes
+- Most machine learning algorithm prefer to work with number
+- Use fit_transform from OrdinalEncoder to convert texts to numbers
+- Check categories_ attribute to list all categories
+Finding
+- Machine Learning will learn that nearby values are more similar than distant values
+- Which may be good in some cases like (bad, average, good, excellent)
+- But it is not the case with ocean_proximity
 		
 	
