@@ -218,3 +218,33 @@ Scikit-Learn provide ColumnTransformer to handle numerical columns separately fr
 - Transformer return same number of rows, but may different number of columns
 - When such mix of sparse and dense matrices are exists ColumnTransform estimates the density of the final matrix (ratio of non zero cells)
 - Return sparse matrix if sparse_threshold=03 is exceeded
+
+
+Select and Train a Model
+We framed the problem
+Got the data and explored it
+Sampled a training and test sets.
+Wrote transformation pipelines to clean up and prepare data
+
+And we are ready to select and traing model
+
+
+
+Select and Train a Model
+Training and Evaluating on the Training Set
+
+Thanks to all previous steps that make things much simpler than we might think
+Train first Linear Regression model is just like 3 lines of code
+
+from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
+lin_reg.fit(housing_prepared, housing_labels)
+
+Done! Let's try it out
+
+
+Select and Train a Model
+Training and Evaluating on the Training Set
+Works, but predictions are not exactly accurate
+Let's measure RMSE on the whole training set
+Scikit-Learn provide mean_squared_error
