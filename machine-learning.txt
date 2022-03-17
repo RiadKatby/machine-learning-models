@@ -248,3 +248,79 @@ Training and Evaluating on the Training Set
 Works, but predictions are not exactly accurate
 Let's measure RMSE on the whole training set
 Scikit-Learn provide mean_squared_error
+
+
+Select and Train a Model
+Training and Evaluating on the Training Set
+Most districts’ median_housing_values range between $120,000 and $265,000
+Prediction error of $68,628 is not very satisfying
+But! What exactly the problem is?
+
+Underfitting
+- Features do not provide enough information to make good predictions
+- model is not powerful enough.
+But first let’s try a more complex model
+
+Select and Train a Model
+Training and Evaluating on the Training Set
+DecisionTreeRegressor. is a powerful model, capable of finding complex nonlinear relationships in the data
+Let's train the model, and evaluate it on the training set
+
+No error at all? Could this model really be absolutely perfect?
+it is much more likely that the model has badly overfit the data
+How can we make sure? Without touching the test set?
+- Use part of training set for training
+- And part for model Validation
+
+
+Select and Train a Model
+Better Evaluation Using Cross-Validation
+
+One way to evaluate the Decision Tree is using train_test_split
+Split the training set into a smaller training set and a validation set
+Training models against the smaller training set and evaluate them against the validation set.
+It's bit of work, but nothin too difficult and it would work fairly well
+
+Alternativly is using Scikit-Learn’s K-fold cross-validation feature.
+Randomly splits training set into 10 distinct subsets called folds
+Train the model on 9 folds, Validate on 1 and rotate
+Results array of 10 evaluation scores
+
+Select and Train a Model
+Better Evaluation Using Cross-Validation
+Decision Tree look worse than the Linear Regression model!
+Cross-validation allow to get estimate of the performance and measure of how precise this estimate (i.e., its standard deviation).
+Decision Tree score of approximately 71,407, generally ±2,439
+Cross-validation comes at the cost of training the model several times, so it is not always possible.
+Comparing mean of error tell us that Decision Tree overfit so badly
+
+
+Select and Train a Model
+Better Evaluation Using Cross-Validation
+
+Let’s try one last model RandomForestRegressor
+Random Forests work by training many Decision Trees on random subsets of features, and Averaging their predictions
+Ensemble Learning: Building a model on top of many other models
+
+
+Select and Train a Model
+Better Evaluation Using Cross-Validation
+
+Finding
+Random Forests look very promising.
+Score on training set is much lower than on validation sets
+Model is still overfitting the training set
+
+Overfitting
+- Simplify model, constrain it (i.e., regularize it)
+- Get more training data
+
+Select and Train a Model
+Better Evaluation Using Cross-Validation
+Try out other models from various categories, Without spending much time tweaking the hyperparameters
+The goal is to shortlist the promising models
+
+Select and Train a Model
+Better Evaluation Using Cross-Validation
+You need to save the model you experiment 
+Saving both hyperparameter and trained parameters
