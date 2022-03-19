@@ -324,3 +324,73 @@ Select and Train a Model
 Better Evaluation Using Cross-Validation
 You need to save the model you experiment 
 Saving both hyperparameter and trained parameters
+
+
+Fine-Tune Your Model
+We now have a shortlist of promising models.
+We need to fine-tune them.
+Let’s look at a few ways you can do that.
+
+Fine-Tune Your Model
+Grid Search
+We could fiddle with the hyperparameters manually, until you find a great combination of hyperparameter values.
+Tedious work, lot of time to explore all combinations.
+Scikit-Learn’s GridSearchCV could search for you
+You provide hyperparameters you want it to experiment
+And what values to try them out
+And it will evaluate all the possible combinations of hyperparameter values, using cross-validation.
+
+Fine-Tune Your Model
+Grid Search
+GridSearchCV is initialized with refit=True
+Retrains it on the whole training set when best estimator is found
+Good idea as feeding the mode more data will likely improve its performance
+
+
+Fine-Tune Your Model
+Randomized Search
+When the hyperparameter search space is large, it is often preferable to use RandomizedSearchCV
+It evaluates a given number of random combinations by selecting a random value for each hyperparameter at every iteration
+This approach has two main benefits:
+- This approach will explore 1,000 different values for each hyperparameter (instead of just a few values per hyperparameter with the grid search approach).
+- You have more control over the computing budget you want to allocate to hyperparameter search, simply by setting the number of iterations.
+
+
+Fine-Tune Your Model
+Analyze the Best Models and Their Errors
+We could gain good insights about the problem by inspecting the best models
+RandomForestRegressor provide relative importance of each attribute for making accurate predictions:
+>>> feature_importances = grid_search.best_estimator_.feature_importances_
+>>> feature_importances
+
+Fine-Tune Your Model
+Analyze the Best Models and Their Errors
+We may want to try dropping some of the less useful features (e.g. ocean_proximity)
+We should look at the specific errors that our system makes
+Try to understand why it makes them and what could fix the problem
+Adding extra features or, getting rid of uninformative ones, cleaning up outliers, etc.
+
+Fine-Tune Your Model
+Evaluate Your System on the Test Set
+It is time to evaluate the final model on the test set.
+Get the predictors and the labels from your test set
+Run your full_pipeline to transform the data
+call transform(), not fit_transform(), you do not want to fit the test set!
+Evaluate the final model on the test set
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
