@@ -378,10 +378,15 @@ Run your full_pipeline to transform the data
 call transform(), not fit_transform(), you do not want to fit the test set!
 Evaluate the final model on the test set
 
+Fine-Tune Your Model
+Evaluate Your System on the Test Set
+We want to have an idea of how precise the estimate.
+For this, We can compute a 95% confidence interval for the generalization
+>>> scipy.stats.t.interval()
 
-
-
-
+When we did a lot of hyperparameter tuning the performance will usually be worse than what cross-validation say
+When this happens we must resist the temptation to tweak the hyperparameter on test set
+Any improvements will not be reflected on new data
 
 
 
