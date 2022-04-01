@@ -91,6 +91,7 @@
 - تحليل المشاعر
 - التعرف على الحروف والأرقام المكتوبة بخط اليد
 - كشف التزوير في الوثائق الرسمية
+
 الخوارزميات الشائعة في التصنيف: Naive Bayes, Decision Tree, Logistic Regression, K-Nearest Neighbours, Support Vector Machine
 
 ### الإنحدار
@@ -100,6 +101,7 @@
 - تحليل حجم العرض والطلب
 - التشخيص الطبي
 - أي ارتباط بين قيمة والزمن
+
 الخوارزميات الشائعة في الإنحدار: Linear and Polynomial Regressions
 
 
