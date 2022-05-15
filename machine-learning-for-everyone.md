@@ -234,7 +234,7 @@
 لا تعمل أساليب العنقدة بالكفاءة التي تعملها بها أساليب التصنيف في هذه التطبيقات، لكن لا بأس من تجربتها.
 
 ### تقليل الأبعاد - التعميم Dimensionality Reduction - Generalization
-![تقليل الأبعاد](\assets\dimensionality-reduction.png)
+![تقليل الأبعاد](/assets/dimensionality-reduction.png)
 
 "تجمع عدة ميزات في مميزات أكثر تجريداً ذات مستوى عالي"
 
