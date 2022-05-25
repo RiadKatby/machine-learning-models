@@ -171,7 +171,9 @@
 
 
 ### الانحدار Regression
-![الانحدار](/assets/regression.jpg)
+<p align="center">
+  <img src="assets/Paper.ML_Models.8.1.jpg" alt="الانحدار"/>
+</p>
 
 "نعم! يعتبر رسم خط يصل نقاط البيانات كأسعار الأسهم على محور والزمن على محور آخر، من أهم تطبيقات تعلم الآلة"
 
