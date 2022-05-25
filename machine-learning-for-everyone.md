@@ -207,7 +207,7 @@
 ### العنقدة Clustering
 
 <p align="center">
-  <img src="assets/Paper.ML_Models.9.jpg" alt="عنقدة 3 أنواع من الأزهار"/>
+  <img src="assets/Paper.ML_Models.9.0.jpg" alt="عنقدة 3 أنواع من الأزهار"/>
 </p>
 
 "تقسم البيانات بناء على ميزات غير معروفة، ويختار الجهاز أفضل طريقة لذلك"
