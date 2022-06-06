@@ -306,7 +306,7 @@
 ## الجزء 2. التعلم المعزز
 
 <p align="center">
-  <img src="assets/reinforcement-learning.jpg" alt="التعلم المعزز"/>
+  <img src="assets/Paper.ML_Models.11.jpg" alt="التعلم المعزز"/>
 </p>
 
 "كالروبوات التي يلقى بها في متاهة وتستطيع إيجاد المخرج بمفردها"
