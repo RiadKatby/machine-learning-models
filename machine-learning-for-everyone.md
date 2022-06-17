@@ -351,7 +351,7 @@
 ## الجزء 3. أساليب المجموعات
 
 <p align="center">
-  <img src="assets/ensemble-methods.jpg" alt="أساليب المجموعات"/>
+  <img src="assets/Paper.ML_Models.12.0.jpg" alt="أساليب المجموعات"/>
 </p>
 
 "تخيلها كمجموعة من أشجار القرار الغبية، تمحو أخطاء بعضها بعضاً"
