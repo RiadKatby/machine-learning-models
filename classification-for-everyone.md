@@ -6,11 +6,10 @@
 
 يوفر Scikit-Learn العديد من الدوال التي تساعد على تنزيل مجموعات البيانات الشائعة وMINST واحدة منهن. يجلب الكود التالي مجموعة البيانات 
 
->>> from sklearn.datasets import fetch_openml
+```>>> from sklearn.datasets import fetch_openml
 >>> mnist = fetch_openml('mnist_784', version=1)
 >>> mnist.keys()
-dict_keys(['data', 'target', 'feature_names', 'DESCR', 'details',
-'categories', 'url'])
+dict_keys(['data', 'target', 'feature_names', 'DESCR', 'details', 'categories', 'url'])```
 
 تحتوي مجموعات البيانات التي تُحمل بواسطة Scikit-Learn عامةً على بنية قاموس موحدة تقريباً، كما يلي
 * DESCR يصف مجموعة البيانات
@@ -19,17 +18,17 @@ dict_keys(['data', 'target', 'feature_names', 'DESCR', 'details',
 
 لنلقي نظرة على هذه المصفوفات:
 
->>> X, y = mnist["data"], mnist["target"]
+```>>> X, y = mnist["data"], mnist["target"]
 >>> X.shape
 (70000, 784)
 >>> y.shape
-(70000,)
+(70000,)```
 
 لدينا 70,000 صورة، ولكل صورة 784 ميزة، حيث أن كل صورة هي 28x28 بكسل، وكل ميزة تمثل بكسل واحد يأخذ قيمة بين ال 0 أبيض وال 255 أسود.
 
 لنلقي نظرة على أحد هذه الأرقام الموجودة في مجموعة البيانات. كل ما علينا فعله هو أخذ أحد متجهات الأمثلة، وإعادة تشكله إلى مصفوفة 28x28، ثم عرضه باستخدام imshow() الموجودة في Matplotlib:
 
-import matplotlib as mpl
+```import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 some_digit = X[0]
@@ -37,16 +36,16 @@ some_digit_image = some_digit.reshape(28, 28)
 
 plt.imshow(some_digit_image, cmap = mpl.cm.binary, interpolation="nearest")
 plt.axis("off")
-plt.show()
+plt.show()```
 
 كما نرى فإنه يشبه الرقم 5، وهذا مايخبرنا به اسمه بالفعل:
 
->>> y[0]
-'5'
+```>>> y[0]
+'5'```
 
 لاحظ أن الاسم عبارة عن نص string، وغالباً ما تكون الأرقام أفضل في هذا المجال لذا دعونا نحول y إلى الأعداد الصحيحة:
 
->>> y = y.astype(np.uint8)
+```>>> y = y.astype(np.uint8)```
 
 إنظر الشكل 3-1 الذي يحتوي بعد الصور الأخرى من مجموعة بيانات MNIST سيعطيك احساساً بتعقيد مهمة التصنيف.
 
@@ -55,29 +54,29 @@ plt.show()
 
 تذكر! يجب علينا دائماً إنشاء مجموعة اختبار ووضعها جانباً قبل التعمق في تفحص البيانات. لحسن الحظ فقد قُسمت هذه المجموعة بالفعل إلى مجموعة تدريب (أول 60,000 صورة) ومجموعة اختبار (آخر 10,000 صورة):
 
-X_train, X_test, y_train, y_test = X[:60000], X[60000:], y[:60000], y[60000:]
+```X_train, X_test, y_train, y_test = X[:60000], X[60000:], y[:60000], y[60000:]```
 
 أحد النقاط الجيدة أيضاً في Scikit-Learn أنها تعطينا مجموعة التدريب وقد تم خلطها بالفعل مسبقاً بما يضمن تشابه كل طيات التحقق المتقاطع (فلا نريد أن نفقد بعض الأرقام في احدى الطيات). ذلك أن بعض خوارزميات التعلم حساسة لترتيب أمثلة التدريب، وستعمل بشكل سيء إذا حصلت على العديد من الأمثلة المتشابهة على التوالي. فيضمن خلط مجموعة البيانات عدم حدوث ذلك.
 
 ## تدريب مصنف ثنائي
 سنبسط المشكلة حالياً ونحاول فقط تحديد رقم واحد وليكون على سبيل المثال الرقم 5. سيكون نموذج الكشف عن الرقم 5 هذا مثالاً لمصنف ثنائي، قادر على التمييز بين صنفين فقط، إما 5 أو ليس 5. سنقوم فيما يلي بتجهيز المتجهات الهدف لهذا المصنف لتكون على صنفين فقط:
 
-y_train_5 = (y_train == 5) # True for all 5s, False for all other digits.
-y_test_5 = (y_test == 5)
+```y_train_5 = (y_train == 5) # True for all 5s, False for all other digits.
+y_test_5 = (y_test == 5)```
 
 يعتبر Stochastic Gradient Descent (SGD) من أفضل خوارزميات التصنيف التي يمكن أن نبدء بها، ولدى Scikit-Learn فئة خاصة له بإسم SGDClassifier. ويتميز بقدرته على العمل بكفاءة مع مجموعات البيانات الكبيرة. إضافة إلى تعامله مع أمثلة مجموعة التدريب واحداً تلو الآخر ما يجعله مناسباً أيضاً للتعلم المستمر online كما سنرى لاحقاً. لننشئ مصنف من فئة SGDClassifier وندربه على مجموعة التدريب بأكملها:
 
-from sklearn.linear_model import SGDClassifier
+```from sklearn.linear_model import SGDClassifier
 
 sgd_clf = SGDClassifier(random_state=42)
-sgd_clf.fit(X_train, y_train_5)
+sgd_clf.fit(X_train, y_train_5)```
 
 *ملاحظة* يعتمد SGDClassifier على العشوائية أثناء التدريب (ومن هنا جاء اسمه) فإذا كنت تريد نتائج قابلة للتكرار عليك تحديد قيمة المعامل random_state.
 
 والآن يمكننا استخدام هذا المصنف لاكتشاف صور الرقم 5:
 
->>> sgd_clf.predict([some_digit])
-array([ True])
+```>>> sgd_clf.predict([some_digit])
+array([ True])```
 
 يخمن المصنف أن هذه الصورة تمثل الرقم 5 وهو على صواب بهذه الحالة بالذات، والآن لنقيّم أداء هذا النموذج.
 
