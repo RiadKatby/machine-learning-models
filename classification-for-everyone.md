@@ -115,15 +115,15 @@ skfolds = StratifiedKFold(n_splits=3, random_state=42)
 
 for train_index, test_index in skfolds.split(X_train, y_train_5):
     clone_clf = clone(sgd_clf)
-	 X_train_folds = X_train[train_index]
-	 y_train_folds = y_train_5[train_index]
-	 X_test_fold = X_train[test_index]
-	 y_test_fold = y_train_5[test_index]
+    X_train_folds = X_train[train_index]
+    y_train_folds = y_train_5[train_index]
+    X_test_fold = X_train[test_index]
+    y_test_fold = y_train_5[test_index]
 	 
-	 clone_clf.fit(X_train_folds, y_train_folds)
-	 y_pred = clone_clf.predict(X_test_fold)
-	 n_correct = sum(y_pred == y_test_fold)
-	 print(n_correct / len(y_pred)) # prints 0.9502, 0.96565 and 0.96495
+    clone_clf.fit(X_train_folds, y_train_folds)
+    y_pred = clone_clf.predict(X_test_fold)
+    n_correct = sum(y_pred == y_test_fold)
+    print(n_correct / len(y_pred)) # prints 0.9502, 0.96565 and 0.96495
 ```
 
 تقوم الفئة `StratifiedKFold` بأخذ عينات طبقية (كما وضحنا في الفصل الثاني) لإنتاج طيات تحتوي على نسبة متماثلة من كل فئة. ينسخ الكود التالي المصنف `sgd_clf` مع كل تكرار، ثم يُدرب هذا المصنف على احد طيات التدريب، ويقوم بالتنبؤات على احدى طيات الاختبار، ثم يحسب عدد التنبؤات الصحيحة ويطبع نسبتها.
