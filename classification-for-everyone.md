@@ -229,14 +229,18 @@ $recall=\frac{TP}{TP+FN}$
 
 المعادلة 3-3. F1
 
-$F1-frac{2}{frac{1}{precision}+frac{1}{recall}}=2*frac{precision*recall}{precision+recall}=frac{TP}{TP+frac{FN+FP}{2}}$
+$F1 = frac{2}{frac{1}{precision} + frac{1}{recall}} = 2 * frac{precision * recall}{precision + recall} = frac{TP}{TP + frac{FN + FP}{2}}$
 
 نستطيع حسبا قيمة F1 عبر الدالة `f1_score()` الموجودة في Scikit-Learn:
+
 ```python
 >>> from sklearn.metrics import f1_score
 >>> f1_score(y_train_5, y_train_pred)
 0.7420962043663375
 ```
+
+يفضل المقياس F1 المصنفات التي لها نفس الدقة والتذكر، لكن هذا ليس ما نريده دائماً، فأحياناً يجب أن نهتم بالدقة أكثر من التذكر وأحياناً أخرى العكس. على سبيل المثال، إذا دربنا مصنف على اكتشاف مقاطع الفيديو الآمنة للأطفال، فيجب أن نفضل 
+
 
 # فهرس الترجمة
 | المصطلح | الترجمة |
