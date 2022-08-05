@@ -466,6 +466,52 @@ array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=uint8)
 
 **ملاحظة** عند تدريب المصنف فإنه يحتفظ بقائمة الأصناف المستهدفة في المصفوفة `classes_` مرتبة حسب القيمة، في حالتنا هذه فإن دليل المصفوفة يتطابق مع اسم الصنف كما في المثال السابق، لكن بشكل عام لن نكون محظوظين بنفس الطريقة.
 
+يمكننا استخدام الفئات `OneVsOneClassifier` و `OneVsRestClassifier` لإجبار Scikit-Learn على استخدام استراتيجية OvO و OvR، وذلك بتمرير المصنف إلى احد هذه الفئات ثم استخدم كائن هذه الفئات كما نستخدم المصنف نفسه، كما في الكود التالي:
+
+```python
+>>> from sklearn.multiclass import OneVsOneClassifier
+>>> ovo_clf = OneVsOneClassifier(SGDClassifier(random_state=42))
+>>> ovo_clf.fit(X_train, y_train)
+>>> ovo_clf.predict([some_digit])
+array([5], dtype=uint8)
+>>> len(ovo_clf.estimators_)
+45
+```
+
+سيكون تدريب `RandomForestClassifier` بنفس السهولة:
+
+```python
+>>> forest_clf.fit(X_train, y_train)
+>>> forest_clf.predict([some_digit])
+array([5], dtype=uint8)
+```
+لكن باستخدام `RandomForestClassifier` لن يكن على Scikit-Learn اتباع احدى استراتيجيتي OvO أو OvA لأن خوارزمية الغابات العشوائية تستطيع التصنيف مباشرة إلى فئات متعددة. ويمكننا استدعاء الدالة `predict_proba()` للحصول على مصفوفة الاحتمالات التي أنشئها المصنف للأمثلة التي مررناها للتنبؤ مقابل الأصناف التي توقعها:
+
+```python
+>>> forest_clf.predict_proba([some_digit])
+array([[0. , 0. , 0.01, 0.08, 0. , 0.9 , 0. , 0. , 0. , 0.01]])
+```
+
+واضح أن المصنف واثق إلى حد ما من توقعه فالإحتما 0.9 الموجود في المصفوفة السابقة عند الدليل 5 يعني أن احتمال أن تكون الصورة تحتوي الرقم 5 هو 90%، وأيضاً من المصفوفة السابقة نكتشف أن المصنف يعتقد أن الصورة قد تكون 2 أو 3 أو 9 بنسب احتمال 1% , 8% , 1% على التوالي.
+
+نحتاج الآن إلى تقييم هذه المصنفات كالعادة نحتاج إلى التحقق المتقاطع. دعنا نقيم دقة `SGDClassifier` باستخدام الدالة `cross_val_score()`:
+
+```python
+>>> cross_val_score(sgd_clf, X_train, y_train, cv=3, scoring="accuracy")
+array([0.8489802 , 0.87129356, 0.86988048])
+```
+
+كما يتضح من المصفوفة السابقة فإن دقة المصنف `SGDClassifier` أكثر 84% في جميع طيات الاختبار، وإذا استخدمنا مصنفاً عشوائياً فسنحصل على دقة 10% لذا فهذه دقة مقبولة، لكن لايزال بإمكاننا العمل على تحسينها بشكل أكبر، على سبيل المثال يمكننا معايرة المدخلات فقط لتزداد الدقة فوق 89%:
+
+```python
+>>> from sklearn.preprocessing import StandardScaler
+>>> scaler = StandardScaler()
+>>> X_train_scaled = scaler.fit_transform(X_train.astype(np.float64))
+>>> cross_val_score(sgd_clf, X_train_scaled, y_train, cv=3, scoring="accuracy")
+array([0.89707059, 0.8960948 , 0.90693604])
+```
+
+
 
 # فهرس الترجمة
 | المصطلح | الترجمة |
