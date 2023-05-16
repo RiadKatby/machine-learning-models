@@ -49,3 +49,11 @@ We will study 2 different ways to train one of the simplest models
   * where θT is the transpose of θ (a row vector)
   * θTx is the matrix multiplication of θT and x.
   * Results same prediction, but represented as a single cell matrix rather than a scalar value.
+
+## Linear Regression
+### How do we train it?
+
+- Training Model means settings its parameters in a way that best fits the training set.
+- RMSE is common measure of how well or poor regression model fit the training sets
+- It is easier find θ that minimize MSE than RMSE and it lead to the same result
+- $` MSE(X, h_θ) = 1 / m \sum_{i=1}^m ( θ^T x_i − y^(i) )^2 `$
