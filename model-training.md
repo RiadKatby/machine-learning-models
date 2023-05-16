@@ -56,4 +56,4 @@ We will study 2 different ways to train one of the simplest models
 - Training Model means settings its parameters in a way that best fits the training set.
 - RMSE is common measure of how well or poor regression model fit the training sets
 - It is easier find θ that minimize MSE than RMSE and it lead to the same result
-- $` MSE(X, h_θ) = \frac{1}{m} \sum_{i=1}^m \left( θ^T x_i − y^\left(i \right) \right)^2 `$
+- $` MSE(X, h_θ) = \frac{1}{m} \sum_{i=1}^{m} \left( θ^T x^\left(i \right) − y^\left(i \right) \right)^2 `$
