@@ -57,3 +57,19 @@ We will study 2 different ways to train one of the simplest models
 - RMSE is common measure of how well or poor regression model fit the training sets
 - It is easier find θ that minimize MSE than RMSE and it lead to the same result
 - $` MSE(X, h_θ) = \frac{1}{m} \sum_{i=1}^m \left( θ^T x^\left(i \right) − y^\left(i \right) \right)^2 `$
+
+## Linear Regression
+### The Normal Equation
+
+- Following mathematical equation that gives best θ that minimizes the cost function $` \widehat{θ} = \left(X^TX \right)^-1 X^T y `$
+• $` \widehat{θ} `$ is the value of θ that minimizes the cost function.
+• y is the vector of target values containing $`y^\left( 1 \right)`$ to $`y^\left( m \right )`$.
+
+Training Step
+- to test the normal equation,
+- Optimal case is to have θ0 = 4 and θ1 = 3, however the noise made it impossible to recover
+Prediction Step
+- 
+
+## Linear Regression
+### Scikit-Learning Code
