@@ -1,0 +1,28 @@
+name: azuremlops_ci
+
+channels:
+  - conda-forge
+dependencies:
+  # The python interpreter version.
+  - python=3.7.*
+
+  # dependencies with versions aligned with conda_dependencies.yml
+  - numpy=1.18.*
+  - pandas=1.0.*
+  - scikit-learn=0.22.*
+
+  - jq
+  - pip=20.0.*
+
+  - pip:
+    # dependencies with version aligned with conda_dependencies.yml
+    - azureml-sdk==1.27.*
+
+    # Additional pip dependencies for the CI environment
+    - pytest==5.4.*
+    - pytest-cov==2.8.*
+    - requests==2.23.*
+    - python-dotenv==0.12.*
+    - flake8==3.7.*
+    - flake8_formatter_junit_xml==0.0.*
+    - azure-cli==2.3.*
