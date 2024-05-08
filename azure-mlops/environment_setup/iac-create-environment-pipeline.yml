@@ -1,0 +1,36 @@
+# CI/PR Pipeline that deploy ARM template to create or update infrastructure resources needed by other pipelines
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - environment_setup/arm-templates/*
+pr:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - environment_setup/arm-templates/*
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  - group: devopsforai-aml-vg
+  - name: WORKSPACE_SKU
+    value: basic
+
+steps:
+  - task: AzureResourceGroupDeployment@2
+    displayName: 'Deploy MLOps resources to Azure'
+    inputs:
+      action: "Create Or Update Resource Group"
+      azureSubscription: '$(AZURE_RM_SVC_CONNECTION)'
+      resourceGroupName: '$(RESOURCE_GROUP)'
+      location: '$(LOCATION)'
+      templateLocation: 'Linked artifact'
+      csmFile: "$(Build.SourcesDirectory)/environment_setup/arm-templates/cloud-environment.json"
+      overrideParameters: "-baseName $(BASE_NAME) -location $(LOCATION) -workspace $(WORKSPACE_NAME) -sku $(WORKSPACE_SKU)"
+      deploymentMode: 'Incremental'
