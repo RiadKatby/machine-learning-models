@@ -5,14 +5,14 @@ trigger:
       - master
   paths:
     include:
-      - environment_setup/arm-templates/*
+      - azure-mlops/environment_setup/arm-templates/*
 pr:
   branches:
     include:
       - master
   paths:
     include:
-      - environment_setup/arm-templates/*
+      - azure-mlops/environment_setup/arm-templates/*
 
 pool:
   vmImage: "ubuntu-latest"
@@ -31,6 +31,6 @@ steps:
       resourceGroupName: '$(RESOURCE_GROUP)'
       location: '$(LOCATION)'
       templateLocation: 'Linked artifact'
-      csmFile: "$(Build.SourcesDirectory)/environment_setup/arm-templates/cloud-environment.json"
+      csmFile: "$(Build.SourcesDirectory)/azure-mlops/environment_setup/arm-templates/cloud-environment.json"
       overrideParameters: "-baseName $(BASE_NAME) -location $(LOCATION) -workspace $(WORKSPACE_NAME) -sku $(WORKSPACE_SKU)"
       deploymentMode: 'Incremental'
