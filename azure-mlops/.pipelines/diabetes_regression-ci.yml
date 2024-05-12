@@ -1,0 +1,19 @@
+# Container Integration (CI) pipeline that orchestrates the training, evaluating, and registration of the diabetes_regression model.
+
+resources:
+  containers:
+  - container: mlops
+    image: mcr.microsoft.com/mlops/python:latest
+
+pr: none
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - diabetes_regression/
+    - ml_service/pipeline
+
+variables:
+- template: 
