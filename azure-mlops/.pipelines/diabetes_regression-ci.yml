@@ -16,4 +16,49 @@ trigger:
     - ml_service/pipeline
 
 variables:
-- template: 
+- template: diabetes_regression-variables.yml
+- group: devopsforai-aml-vg
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: 'Model_CI'
+  displayName: 'Model CI'
+  container: mlops
+  timeoutInMinutes: 0
+  steps:
+  - template: code-quality-template.yml
+  - task: AzureCLI@1
+    inputs:
+      azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+      scriptLocation: inlineScript
+      workingDirectory: $(Build.SourcesDirectory)
+      inlineScript: |
+        set -e # fail on error
+        export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+        # Invoke the Python building and publishinga training pipeline
+        python - m ml_service.pipelines.diabetes_regression_build_train_pipeline
+    displayName: 'Publish Azure Machine Learning Pipeline'
+
+- stage: 'Trigger_AML_Pipeline'
+  displayName: 'Train and Evaluate Model'
+  condition: succeeded()
+  variables:
+    BUILD_URI: '$(SYSTEM.COLLECTIONURI)$(SYSTEM.TEAMPROJECT)/_build/results?buildId=$(BUILD.BUILDID)'
+  jobs:
+  - job: "Get_Pipeline_ID"
+    condition: and(succeeded(), eq(coalesce(variables['auto-trigger-training'], 'true'), 'true'))
+    displayName: 'Get Pipeline ID for execution'
+    container: mlops
+    timeoutInMinutes: 0
+    steps:
+    - task: AzureCLI@1
+      inputs:
+        azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          python -m ml_service.pipelines.run_train_pipeline --output_pipeline_id_file "pipeline_id.txt" --skip_train_execution
