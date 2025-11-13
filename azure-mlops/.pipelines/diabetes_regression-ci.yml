@@ -13,7 +13,7 @@ trigger:
   paths:
     include:
     - diabetes_regression/
-    - ml_service/pipeline
+    - ml_service/pipelines/diabetes_regression_build_train_pipeline.py
 
 variables:
 - template: diabetes_regression-variables.yml
