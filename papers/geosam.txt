@@ -1,0 +1,29 @@
+- التجشئة: نحت لكلمتي تجزئة أي شيء، هو نموذج أساسي في مجال الرؤية الحاسوبية من تطوير شركة ميتا، يدعى SAM - Segment Anything
+- تلقينات متعددة الوسائط: multi-modal prompts، تشير إلى الجمع بين أنواع التلقينات المختلفة كالجمع بين التلقينات النصية والتلقينات النقطية. سيستخدم هذا المصطلح بكثرة في هذه الورقة، حيث أن نموذج التجشئة الذي قام عليه العمل في هذه الورقة يقدم عدة أنواع من التلقينات وليست فقط التلقينات النصية المعروفة، إنما هناك أيضاً تلقين نقطي حيث يستطيع المستخدم تحديد نقطة واحدة على الكائن المراد تجزئته من الصورة، والتلقين القناع، حيث يستطيع المستخدم تلقين النموذج بمضلع حول الكائن المراد تجزئته، وأخير تلقين المربع حيث يستطيع رسم مربع على الكائن المراد تجزئته من الصورة، ليقوم نموذج التجشئة SAM باستخراج الكائن من الصورة.
+- **متوسط التقاطع على الاتحاد**: mIoU تسحب الدقة في عملية التجزئة من قسمة تقاطع مضلعي الكائن الحقيقي في مجموعة البيانات، والمضلع الذي تنبأ بهذ النموذج على اتحاد المضلعين، فإذا كان على النموذج أن يتنبأ بأكثر من فئة لكل كائن استطاع تجزئته، عندها يحسب متوسط التقاطع على الاتحاد لكل الفئات.
+- **إمكانية الوصول**: تشير إلى قدرة المشاة وذوي الحاجات الخاصة على استخدام البنية التحتية والحضرية (الأرصفة، وممرات المشاة، والممرات) بأمان وفعالية.
+## الملخص
+
+يُقيد الأداء في مجال تجزئة الصور الجغرافية غالبًا بمحدودية بيانات التدريب ونقص القدرة على التعميم، لا سيما عند تجزئة البنية التحتية للمواصلات كالشوارع والأرصفة وممرات المشاة. وقد أظهرت نماذج الرؤية الأساسية، مثل نموذج **التجشئة** المُدرّب مسبقًا على ملايين الصور الطبيعية، أداءً مذهلاً في التجزئة **بدون مثال**، مما يُقدّم حلاً واعدًا. لكن، يُواجه نموذج **التجشئة** صعوبةً في التعامل مع الصور الجغرافية، كصور الأقمار الصناعية والصور الجوية، نظرًا لاقتصار تدريب النموذج على الصور الطبيعية، وتداخل ملامح الأجسام وقوامها من الفضاء مع محيطها. يقترح الباحثون لمعالجة هذه التحديات، نموذج التجشئة الجغرافي، كإطار عمل قائم على نموذج تجشئة بأداء محسن باستخدام **تلقينات متعددة الوسائط** مولدة تلقائياً. يدمج نموذج التجشئة الجغرافي التلقينات النقطية من نموذج مُدرّب مسبقًا خاص لهذه المهمة كدليل بصري أساسي، مع تلقينات نصية مُولّدة بواسطة نموذج لغوي كبير كدليل دلالي ثانوي، مما يُمكّن النموذج من استيعاب كلٍ من البنية المكانية والمعنى السياقي بشكل أفضل. يتفوق نموذج التجشئة الجغرافي على الأساليب الحالية في تجزئة بنية النقل التحتية في المناطق المألوفة وغير المألوفة بنسبة لا تقل عن 5% في مؤشر **متوسط التقاطع على الاتحاد**، مما يمثل قفزة نوعية في الاستفادة من النماذج الأساسية لتجزئة البنية التحتية للتنقل، بما في ذلك الطرق وممرات المشاة في الصور الجغرافية. تم نشر كود النموذج للعموم [هنا](https://github.com/rafiibnsultan/GeoSAM).
+
+## المقدمة
+ركزت الكثير من الأبحاث [^7] [^43] [^17] [^28] [^13] على تجزئة البنية التحتية للطرق من الصور الجغرافية وصور الاستشعار عن بُعد، مثل الصور الجوية والفضائية، إلا أن البنية التحتية للمشاة، كالأرصفة وممرات عبور المشاة، لم تحظَ إلا باهتمام ضئيل نسبياً، رغم أهميتها في الحياة اليومية. انصبّت الجهود البحثية تاريخياً على مساعدة السائقين في التنقل في الغالب بدلاً من مساعدة المشاة [18].
+
+تستخدم دراسات **إمكانية الوصول** 
+
+تستخدم دراسات **إمكانية الوصول** الحالية بيانات طرق مبسطة غالباً، لكن التجزئة الدقيقة للبنية المشاة التحتية تُسهم في الكشف بشكل أفضل عن الطرق والوجهات المُيسّرة، لا سيما للأشخاص ذوي الإعاقة.
+
+## المراجع
+[^7]: X. Chen, Q. Sun,W. Guo, C. Qiu, and A. Yu. Ga-net: A geometry prior assisted neural network for road extraction. International Journal of Applied Earth Observation and Geoinformation, 114:103004, 2022.
+[^11]: A. Dosovitskiy et al. An image is worth 16x16 words: Transformers for image recognition at scale. In ICLR, 2021.
+[^13]: P. Gudžius, O. Kurasova, V. Darulis, and E. Filatovas. Deep learning based object recognition in multispectral satellite imagery for real-time applications. Machine Vision and Applications, 32(4):98, 2021.
+[^14]: A. Hatamizadeh, V. Nath, Y. Tang, D. Yang, H. R. Roth, and D. Xu. Swin unetr: Swin transformers for semantic segmentation of brain tumors in mri images. In International MICCAI Brainlesion Workshop, pages 272–284. Springer, 2021.
+[^17]: C. Henry, S. M. Azimi, and N. Merkle. Road segmentation in sar satellite images with deep fully convolutional neural networks. IEEE Geoscience and Remote Sensing Letters, 15(12):1867–1871, 2018.
+[^18]: M. Hosseini, A. Sevtsuk, F. Miranda, R. M. Cesar Jr, and C. T. Silva. Mapping the walk: A scalable computer vision approach for generating sidewalk network datasets from aerial imagery. Computers, Environment and Urban Systems, 101:101950, 2023.
+[^20]: F. Isensee, P. F. Jaeger, S. A. Kohl, J. Petersen, and K. H. Maier-Hein. nnu-net: a self-configuring method for deep learning-based biomedical image segmentation. Nature methods, 18(2):203–211, 2021.
+[^28]: A. Saha. Conducting semantic segmentation on landcover satellite imagery through u-net architectures. In Proceedings of the Future Technologies Conference, pages 758–764. Springer, 2022.
+[^27]: O. Ronneberger, P. Fischer, and T. Brox. U-net: Convolutional networks for biomedical image segmentation. In Medical Image Computing and Computer-Assisted Intervention–MICCAI 2015. Springer, 2015.
+[^31]: K. Sun, B. Xiao, D. Liu, and J. Wang. Deep high-resolution representation learning for human pose estimation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 2019.
+[^43]: L. Zhou, C. Zhang, and M. Wu. D-linknet: Linknet with pretrained encoder and dilated convolution for high resolution satellite imagery road extraction. In Proceedings of the IEEE conference on computer vision and pattern recognition workshops, pages 182–186, 2018.
+[^45]: Z. Zhou, M. M. Rahman Siddiquee, N. Tajbakhsh, and J. Liang. Unet++: A nested u-net architecture for medical image segmentation. In Deep Learning in Medical Image Analysis and Multimodal Learning for Clinical Decision Support, pages 3–11. Springer, 2018.
+
