@@ -8,6 +8,7 @@
 Deeper neural networks are more difficult to train.
 
 يقدم الباحثون في هذه الورقة إطار عمل ل**تعلم المتبقي** لتسهيل تدريب الشبكات الأعمق بكثير من تلك المستخدمة سابقاً.
+We present a residual learning framework to ease the training of networks that are substantially deeper than those used previously.
 
 أعاد الباحثون صياغة الطبقات لتصبح ك**دالة الباقي** بنسبة إلى مدخلاتها، بعد تعليمها، بدلًا من تعليمها ك**دالة بدون مرجعية**.
 We explicitly reformulate the layers as learning residual functions with reference to the layer inputs, instead of learning unreferenced functions.
