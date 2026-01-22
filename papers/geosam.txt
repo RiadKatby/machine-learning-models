@@ -4,7 +4,19 @@
 - **إمكانية الوصول**: تشير إلى قدرة المشاة وذوي الحاجات الخاصة على استخدام البنية التحتية والحضرية (الأرصفة، وممرات المشاة، والممرات) بأمان وفعالية.
 - **الصور المعنونة يدوياً**: صور تم وضع أقنعة التجزئة حول الكائنات والأجسام وعناوين لتلك الكائنات أو الأجسام يدوياً بواسطة البشر، وهو أمر مكلف ويستغرق وقتاً طويلا مايجعله صعب التوسع.
 - **نموذج رؤية أساسي**: نموذج كبير للرؤية الحاسوبية وغير مرتبط بمهمة محددة، دُرب مسبقاً على صور متنوعة وواسعة النطاق، ويمكن تكييفه مع مهام جديدة دون إعادة تدريبه، بتوجييه بإستخدام التلقينات. (قمت بإستخدام صيغة النكرة لوجود العديد من تلك النماذج الأساسية).
-- **نموذج التجشئة الجغرافي**: GeoSAM - Geographical Segment Anythings هو نموذج تجشئة حيث أن فاك التشفير مضبوط على صور الجغرافية باستخدام تلقينات نقطية ونصية آلية التوليد لتجزئة النبية التحتية للطرق والمشاة بدقة من الصور الجوية والفضائية.
+- **نموذج التجشئة الجغرافي**: GeoSAM - Geographical Segment Anything هو نموذج تجشئة (تجزئة أي شيء) حيث أن فاك التشفير مضبوط على صور الجغرافية باستخدام تلقينات نقطية ونصية آلية التوليد لتجزئة البنية التحتية للطرق والمشاة بدقة من الصور الجوية والفضائية.
+
+- **توليد النقاط الجغرافية**: طريقة للتوليد التلقائي للتلقينات النقطية التي تشير إما إلى عنصر جغرافي على الصور foreground أو إلى خلفية الصورة background وذلك باستخدام نموذج تجزئة تقليدي مدرب مسبقاً لهذه الوظيفة فقط.
+
+<abbr title="نموذج كبير للرؤية الحاسوبية وغير مرتبط بمهمة محددة، دُرب مسبقاً على صور متنوعة وواسعة النطاق، ويمكن تكييفه مع مهام جديدة دون إعادة تدريبه، بتوجييه بإستخدام التلقينات.">النماذج الأساسية</abbr>
+
+<abbr title="GeoSAM - Geographical Segment Anything هو نموذج تجشئة (تجزئة أي شيء) حيث أن فاك التشفير مضبوط على صور الجغرافية باستخدام تلقينات نقطية ونصية آلية التوليد لتجزئة البنية التحتية للطرق والمشاة بدقة من الصور الجوية والفضائية.">المجشئ الجغرافي</abbr>
+
+<abbr title="طريقة للتوليد التلقائي للتلقينات النقطية التي تشير إما إلى عنصر جغرافي على الصور foreground أو إلى خلفية الصورة background وذلك باستخدام نموذج تجزئة تقليدي مدرب مسبقاً لهذه الوظيفة فقط.">توليد النقاط الجغرافية</abbr>
+
+<abbr title="multi-modal prompts، تشير إلى الجمع بين أنواع التلقينات المختلفة كالجمع بين التلقينات النصية والتلقينات النقطية. سيستخدم هذا المصطلح بكثرة في هذه الورقة، حيث أن نموذج التجشئة الذي قام عليه العمل في هذه الورقة يقدم عدة أنواع من التلقينات وليست فقط التلقينات النصية المعروفة، إنما هناك أيضاً تلقين نقطي حيث يستطيع المستخدم تحديد نقطة واحدة على الكائن المراد تجزئته من الصورة، والتلقين القناع، حيث يستطيع المستخدم تلقين النموذج بمضلع حول الكائن المراد تجزئته، وأخير تلقين المربع حيث يستطيع رسم مربع على الكائن المراد تجزئته من الصورة، ليقوم نموذج التجشئة SAM باستخراج الكائن من الصورة.">التلقينات متعددة الوسائط</abbr>
+
+<abbr title="نحت لكلمتي تجزئة أي شيء، هو نموذج أساسي في مجال الرؤية الحاسوبية من تطوير شركة ميتا، يدعى SAM - Segment Anything">المجشئ</abbr>
 
 ## الملخص
 
@@ -18,6 +30,48 @@
 تفشل النماذج التقليدية غالبًا، عند تدريبها على مجموعات بيانات محدودة ومتجانسة (الشكل 1a)، في التمييز بين الفئات الدقيقة (مثل الأرصفة والطرق)، والتي تُظهر اختلافات بصرية دقيقة (مثل الحدود الرقيقة، والنسيج المتشابه، والحجب المتكرر) (الشكل 1b). <!-- Traditional models, when trained on limited and homogeneous datasets(Figure 1a), often fail to distinguish fine-grained classes such as sidewalks and roads, which exhibit subtle visual differences like thin boundaries, similar textures, and frequent occlusions (Figure 1b). --> علاوة على ذلك، فإن ما تعلمته تلك النماذج من تمثيلات للكائنات والأجسام عادةً ما تكون خاصة بمجال معين، ما يؤدي إلى ضعف التعميم عند استخدامها في مناطق غير مرئية أو مجموعات بيانات ذات خصائص بصرية مختلفة.<!-- Moreover, their learned representations are typically domain-specific, resulting in poor generalization when deployed in unseen regions or datasets with different visual characteristics. --> وحتى التحولات الطفيفة في توزيع البيانات، مثل الانتقال من منطقة جغرافية إلى أخرى، غالبًا ما تؤدي إلى تدهور كبير في الأداء. <!-- Even minor shifts in data distribution, such as moving from one geographic region to another, often lead to significant performance degradation --> تُقدم - في المقابل - **نماذج الرؤية الأساسية**، المُدربة مسبقًا بشكل مستقل عن المهمة على توزيعات صور متنوعة وواسعة النطاق [^21] [^26]، بديلاً واعدًا بقدرة تعميم فائقة (عبر مجالات متنوعة). <!-- In contrast, vision foundation models, pre-trained task agnostically on large-scale and diverse image distributions [21, 26], offer a promising alternative with superior generalization ability across varying domains. --> تتكيف هذه النماذج مع المهام اللاحقة الجديدة (دون الحاجة إلى إعادة التدريب)، معتمدةً على توجيهات المستخدم للإرشاد السياقي. <!-- These models adapt to new downstream tasks without re-training, relying on user-provided prompts for contextual guidance. --> استفاد الباحثون في هذه الورقة من نموذج **التجشئة** (تجزئة أي شيء) [^21]، وهو **نموذج رؤية أساسي** قابل للتوجيه، للتغلب على قيود الأساليب التقليدية وتمكين التجزئة الفعالة للبنية التحتية للتنقل، حتى مع البيانات المعنونة المحدودة وعبر مناطق جغرافية متنوعة. <!-- In this work, we leverage the Segment Anything Model (SAM) [^21], a promptable vision foundation model, to overcome the limitations of traditional approaches and enable effective segmentation of mobility infrastructure, even with limited labeled data and across geographically diverse regions. -->
 
 تتطلب الهياكل واسعة النطاق مكانيًا، كالشوارع والأرصفة، عادةً عدة محاولات متكررة لالتقاط امتدادها الكامل، على عكس الأجسام الصغيرة في الصور الطبيعية، حيث تكفي نقطة واحدة (مثلاً، على جسم كلب) للتجزئة. <!-- However, unlike compact objects in natural images, where a single point (e.g., placed on a dog’s body) often suffices for segmentation, spatially extensive structures like roads and sidewalks usually require multiple iterative prompts to capture their full extent. --> هذه العملية مرهقة وعرضة للأخطاء غالباً، وحتى مع المحاولات المتعددة، سيواجه نموذج التجشئة بدون مثال صعوبة في مهام الاستشعار عن بعد نظراً لتدريبه المسبق على الصور الطبيعية، التي تفتقر إلى الهياكل الكبيرة ذات النسيج المتشابه الشائعة في البيانات الجغرافية [^21]. <!-- This process is often exhaustive and error-prone, and even with multiple prompts, zero-shot SAM struggles in remote sensing tasks due to its pre-training on natural images, which lack the large, texture-similar structures common in geographical data [^21]. --> نستطيع مع ذلك تكييف قدرة نموذج التجشئة على تجزئة الصور الجغرافية من خلال ضبطه بدقة على بيانات محدودة (أسفل الشكل 1)، ما يسمح له بتعلم أنماط خاصة بالمجال والحفاظ على فعاليته في ظل تغيرات التوزيع المكاني. <!-- Nonetheless, SAM’s general segmentation capability can be adapted to geographical imagery via fine-tuning on limited data (bottom of Figure 1), allowing it to learn domain-specific patterns and remain effective under regional distribution shifts. --> قدم الباحثون في هذه الورقة **نموذج التجشئة الجغرافي** بالاستفادة من تلك الميزة، وهو نموذج شامل مصمم لتجزئة البنية التحتية للتنقل من خلال تجزئة متعددة الفئات للطرق والنبية التحتية للمشاة. <!-- Capitalizing on this strength, we introduce Geographical SAM (GeoSAM), an end-to-end model tailored for segmenting mobility infrastructure through multi-class segmentation of road and pedestrian infrastructure. -->
+
+يقترح الباحثون في هذه الورقة تقنية **توليد النقاط الجغرافية** لمعالجة التحديات السابقة، وهي تقنية تولد تلقينات نقطية آلياً للصور الجغرافية من نموذج مُدرَّب مسبقًا خاص بمجال الصور الجغرافي، وذلك لتوفير توجيه مكاني دقيق.
+To address these challenges, we propose Geo-Point Generation (GPG), an automated prompt generation technique that generates point prompts for geographical images from a domain-specific pretrained model for precise spatial guidance.
+
+وتُكمَّل هذه التقنية بتلقينات نصية لتوضيح المعنى الدلالي وحل الغموض الكامن في التوجيه القائم على النقاط.
+It is complemented by text prompts for semantic clarity to resolve ambiguities inherent in pointbased guidance.
+
+تلفت التلقينات النقطية تركيز النموذج على بكسلات مُحدَّدة، لكن غالباً ما ينتمي بكسل واحد على الصور إلى عدة كائنات.
+Point prompts focus the model on specific pixels, but a single pixel can often belong to multiple objects.
+
+فتأتي التلقينات النصية، والتي تحتوي على معلومات دلالية حول صنف الكائن، لتقدم فهماً أوسع للكائن محل الاهتمام [^37].
+Text prompts, containing semantic information about the class, clarify the object of interest and provide a broader understanding [37].
+
+يضمن هذا التصميم المتكامل توجيهًا هندسيًا دقيقًا من التلقينات النقطية وفهمًا سياقيًا أوسع من التلقينات النصية، ما يُحسِّن دقة التجزئة.
+This complementary design ensures precise geometrical guidance from point prompts and broader contextual understanding from text prompts, enhancing segmentation accuracy.
+------
+
+تضبط **التلقينات متعددة الوسائط** نموذج **التجشئة** من خلال وحدة فك التشفير.
+These multi-modal prompts fine-tune SAM through its lightweight decoder.
+
+قدم الباحثون في هذه الورقة **المجشئ الجغرافي** من خلال دمج الدقة المكانية (عبر التلقين النقطي على الصورة) والسياق المكاني (عبر التلقين النصي الذي يصف الكائن)، كنموذج **تجشئة** متكامل مُحسَّن لتجزئة الطرق والبنية التحتية للمشاة إلى فئات متعددة.
+By integrating spatial precision with semantic context, we introduce Geographical SAM (GeoSAM), an end-to-end SAMbased model fine-tuned for multi-class segmentation of roads and pedestrian infrastructure.
+
+يتفوق **المجشئ الجغرافي** على الأساليب التقليدية القائمة على شبكات الطي العصبية [^18] [^17] [^43]، ليس فقط بتحسين دقة التجزئة، بل أيضًا بإظهار إمكانية دمج اللغة الطبيعية والتفاعل المرئي ضمن **النماذج الأساسية** للصور الجغرافية.
+GeoSAM outperforms traditional CNNbased approaches [18, 17, 43], not only improving segmentation accuracy but also demonstrating the potential of combining natural language and visual interaction within foundation models for geographical imagery.
+
+تتلخص إسهامات الباحثون في ثلاثة جوانب: (1) الريادة في استخدام **المجشئ** لتجزئة البنية التحتية للتنقل إلى فئات متعددة، من خلال دمج التلقينات النقطية والنصية في الصور الجغرافية.
+Our contributions are three-fold: (1) We pioneer the use of SAM for multi-class mobility infrastructure segmentation, integrating point and text prompts in geographical imagery.
+
+(2) تقديم تقنيات ضبط النماذج وتوليد التلقينات تلقائيًا، والتي تجلب المعرفة المتخصصة من النماذج التقليدية إلى النماذج الأساسية عبر التلقينات متعددة الوسائط.
+(2) We introduce fine-tuning and automated prompt generation techniques that inject domain knowledge from traditional models via multi-modal prompts.
+
+(3) إجراء تقييم شامل على مجموعات بيانات مدينتين، ما أظهر الأداء القوي لنموذج التجشئة الجغرافي وقابليته للتعميم عبر مواقع متنوعة.
+(3) We conduct extensive evaluations on datasets from two cities, demonstrating GeoSAM’s strong performance and generalizability across diverse locations.
+
+
+تجزئة البنية التحتية للتنقل: (أ) تحتاج النماذج التقليدية إلى مجموعات بيانات كبيرة خاصة بكل مهمة، (ب) وتواجه صعوبة في التعامل مع الكائنات الضيقة ذات النسيج المتشابه، مما ينتج عنه نتائج دون المستوى المطلوب. 
+Mobility infrastructure segmentation: (a) Traditional models need large task-specific datasets, (b) struggle with narrow, texture-similar objects, yielding subpar results.
+
+ويحقق ضبط نموذج أساسي قابل للتلقين باستخدام بيانات وتوجيهات محدودة أداءً مماثلاً.
+Fine-tuning a promptable foundation model with limited data and prompts achieves on-par performance.
+
 
 ## المراجع
 [^3]: K. Cha, J. Seo, and T. Lee. A billion-scale foundation model for remote sensing images. IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing, 2024.
@@ -36,6 +90,7 @@ on machine learning, pages 8748–8763. PMLR, 2021.
 [^27]: O. Ronneberger, P. Fischer, and T. Brox. U-net: Convolutional networks for biomedical image segmentation. In Medical Image Computing and Computer-Assisted Intervention–MICCAI 2015. Springer, 2015.
 [^28]: A. Saha. Conducting semantic segmentation on landcover satellite imagery through u-net architectures. In Proceedings of the Future Technologies Conference, pages 758–764. Springer, 2022.
 [^31]: K. Sun, B. Xiao, D. Liu, and J. Wang. Deep high-resolution representation learning for human pose estimation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 2019.
+[^37] Y. Yan, H. Wen, S. Zhong, W. Chen, H. Chen, Q. Wen, R. Zimmermann, and Y. Liang. Urbanclip: Learning text-enhanced urban region profiling with contrastive language-image pretraining from the web. In Proceedings of the ACM on Web Conference 2024, 2024.
 [^43]: L. Zhou, C. Zhang, and M. Wu. D-linknet: Linknet with pretrained encoder and dilated convolution for high resolution satellite imagery road extraction. In Proceedings of the IEEE conference on computer vision and pattern recognition workshops, pages 182–186, 2018.
 [^45]: Z. Zhou, M. M. Rahman Siddiquee, N. Tajbakhsh, and J. Liang. Unet++: A nested u-net architecture for medical image segmentation. In Deep Learning in Medical Image Analysis and Multimodal Learning for Clinical Decision Support, pages 3–11. Springer, 2018.
 
